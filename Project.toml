@@ -1,0 +1,13 @@
+name = "SigmoidNumbers"
+uuid = "f3788140-4e5e-469c-9b73-f9a0e7ddcb53"
+author = ["Isaac Yonemoto"]
+version = "0.0.0"
+
+[compat]
+julia = "0.7, 1.0"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
