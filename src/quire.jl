@@ -12,7 +12,6 @@
 
   Currently, no shortcut operations are supported.
 """
-
 mutable struct Quire
   fixed_point_value::Vector{UInt64}
   infinity::Bool
