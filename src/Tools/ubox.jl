@@ -50,9 +50,9 @@ end
 
     describe the width of the valid number.  This is the number of tiles.
 """
-vwidth{N,ES}(x::Valid{N,ES}) = ((@u x.upper) - (@u x.lower)) >> (64 - N) + 1
+vwidth(x::Valid{N,ES}) where {N,ES} = ((@u x.upper) - (@u x.lower)) >> (64 - N) + 1
 
-function merge_contiguous!(v1::Array{Valid{N,ES},J}, v2::Array{Valid{N,ES},J}) where J where {N,ES}
+function merge_contiguous!(v1::Array{Valid{N,ES},J}, v2::Array{Valid{N,ES},J}) where {N,ES,J}
     dim = 0
     for idx = 1:length(v1)
         dim = idx
@@ -72,14 +72,14 @@ function merge_contiguous!(v1::Array{Valid{N,ES},J}, v2::Array{Valid{N,ES},J}) w
     true
 end
 
-function coalesce!(a::Vector{Array{Valid{N,ES},J}}, b::Vector{Array{Valid{N,ES},J}}) where J where {N,ES}
+function coalesce!(a::Vector{Array{Valid{N,ES},J}}, b::Vector{Array{Valid{N,ES},J}}) where {N,ES,J}
     for b_item in b
         coalesce!(a, b_item)
     end
     #coalesce!(a)
     return a
 end
-function coalesce!(a::Vector{Array{Valid{N,ES},J}}, b::Array{Valid{N,ES},J}) where J where {N,ES}
+function coalesce!(a::Vector{Array{Valid{N,ES},J}}, b::Array{Valid{N,ES},J}) where {N,ES,J}
     merged = false
     for idx = 1:length(a)
         if merge_contiguous!(a[idx],b)
@@ -90,7 +90,7 @@ function coalesce!(a::Vector{Array{Valid{N,ES},J}}, b::Array{Valid{N,ES},J}) whe
     merged || push!(a, b)
 end
 
-function coalesce_2!(a::Vector{Array{Valid{N,ES},J}}) where J where {N,ES}
+function coalesce_2!(a::Vector{Array{Valid{N,ES},J}}) where {N,ES,J}
     #pop the top two values and attempt to coalesce them.
     if length(a) >= 2
         if merge_contiguous!(a[end-1], a[end])
@@ -99,7 +99,7 @@ function coalesce_2!(a::Vector{Array{Valid{N,ES},J}}) where J where {N,ES}
     end
 end
 
-function coalesce_top!(a::Vector{Array{Valid{N,ES},J}}) where J where {N,ES}
+function coalesce_top!(a::Vector{Array{Valid{N,ES},J}}) where {N,ES,J}
     while length(a) >= 2
         if merge_contiguous!(a[end-1], a[end])
             pop!(a)
@@ -125,7 +125,7 @@ function ufilter(pred::Function, x::Valid{N,ES}, ::Type{Val{verbose}} = Val{fals
         return Valid{N,ES}[]
     end
 end
-function ufilter(pred::Function, x::Array{Valid{N,ES},J}) where J where {N, ES}
+function ufilter(pred::Function, x::Array{Valid{N,ES},J}) where {N, ES, J}
     if pred(x)
         #check to see if we're all tiles.
         mapreduce(istile, &, true, x) && return Array{Valid{N,ES},J}[x]
@@ -145,7 +145,7 @@ function ufilter(pred::Function, x::Array{Valid{N,ES},J}) where J where {N, ES}
     end
 end
 
-function ufilter_bfs(pred::Function, x::Array{Valid{N,ES},J}) where J where {N,ES}
+function ufilter_bfs(pred::Function, x::Array{Valid{N,ES},J}) where {N,ES,J}
     #consider implementing this as a linked list type for better performance.
     queue = Array{Valid{N,ES},J}[]
     results = Array{Valid{N,ES},J}[]
@@ -183,7 +183,7 @@ function Base.union(a::Valid{N,ES},b::Valid{N,ES}) where {N,ES}
     return min(a.lower, b.lower) → max(a.upper, b.upper)
 end
 
-function merge_into!(a::Array{Valid{N,ES},J}, b::Array{Valid{N,ES},J}) where J where {N,ES}
+function merge_into!(a::Array{Valid{N,ES},J}, b::Array{Valid{N,ES},J}) where {N,ES,J}
     #just assign when a in a.
     isempty(a[1]) && (a[:] = b[:]; return)
     for idx = 1:length(a)
@@ -195,7 +195,7 @@ function Base.in(a::Valid{N,ES}, b::Valid{N,ES}) where {N,ES}
     return a.lower >= b.lower && a.upper <= b.upper
 end
 
-function ufilter_dfs(pred::Function, x::Array{Valid{N,ES},J}) where J where {N,ES}
+function ufilter_dfs(pred::Function, x::Array{Valid{N,ES},J}) where {N,ES,J}
     #consider implementing this as a linked list type for better performance.
     queue = Array{Valid{N,ES},J}[]
     bbox = [Valid{N,ES}(∅) for idx in 1:length(x)]
