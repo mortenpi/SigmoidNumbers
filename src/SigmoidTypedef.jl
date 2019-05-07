@@ -28,15 +28,16 @@ const roundingmodes = [:guess,
   :lower]
 
 #set some type aliases.
-Posit{N, ES} = Sigmoid{N, ES, :guess}
-Vnum{N, ES} = Sigmoid{N, ES, :ubit}
+const Posit{N, ES} = Sigmoid{N, ES, :guess}
+const Vnum{N, ES} = Sigmoid{N, ES, :ubit}
 
 #there's a couple of dummy types that we'll use for syntatical sugar purposes.
-Exact{N,ES} = Sigmoid{N, ES, :EXACT}
-ULP{N,ES} = Sigmoid{N, ES, :ULP}
+const Exact{N,ES} = Sigmoid{N, ES, :EXACT}
+const ULP{N,ES} = Sigmoid{N, ES, :ULP}
+
 #trampoline their constructor against the Vnum constructor.
-(::Type{Exact{N,ES}})(n::Unsigned)::Vnum{N,ES} where {N,ES} = iseven(n) ? Vnum{N,ES}(n) : throw(ArgumentError("Exact numbers must have an even int representation!"))
-(::Type{ULP{N,ES}})(n::Unsigned)::Vnum{N,ES} where {N,ES}   = isodd(n) ? Vnum{N,ES}(n) : throw(ArgumentError("ULP numbers must have an odd int representation!"))
+((::Type{Exact{N,ES}})(n::Unsigned)::Vnum{N,ES}) where {N,ES} = iseven(n) ? Vnum{N,ES}(n) : throw(ArgumentError("Exact numbers must have an even int representation!"))
+((::Type{ULP{N,ES}})(n::Unsigned)::Vnum{N,ES}) where {N,ES}   = isodd(n) ? Vnum{N,ES}(n) : throw(ArgumentError("ULP numbers must have an odd int representation!"))
 
 struct Valid{N, ES} <: AbstractFloat
   lower::Vnum{N, ES}
