@@ -1,5 +1,7 @@
 module SigmoidNumbers
 
+  using LinearAlgebra
+
   include("SigmoidTypedef.jl")
   include("macros.jl")
   include("inttools.jl")
