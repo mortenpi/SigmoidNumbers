@@ -21,7 +21,7 @@ end
 
 istile(x::Valid{N,ES}) where {N,ES} = (x.lower == x.upper)
 
-doc"""
+"""
     roundsinf(x::Valid)
     checks if the value "rounds infinity".  Table:
 

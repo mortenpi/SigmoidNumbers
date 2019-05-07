@@ -9,7 +9,7 @@ macro unitrange_check(y, functionname)
   end
 end
 
-doc"""
+"""
   oneminus(::Posit)
 
   calculates the value of 1-y.
@@ -23,7 +23,7 @@ function oneminus_careful(y)
   oneminus_sloppy(y)
 end
 
-doc"""
+"""
   pseudologistic(::Posit)
 
   calculates the pseudo-logistic sigmoid curve for the Posit data type.
@@ -35,7 +35,7 @@ function pseudologistic_careful(x::Posit)
   __round(pseudologistic_sloppy(x))
 end
 
-doc"""
+"""
   delta_psl(::Posit)
 
   calculates the value dy/dx using the differential equation dy/dx = y(1 - y)
@@ -49,7 +49,7 @@ function delta_psl_careful(y::Posit)
   __round(delta_psl_sloppy(y))
 end
 
-doc"""
+"""
   pseudologcost(::Posit)
 
   calculates the pseudologcost function for the Posit data type.  The
@@ -64,7 +64,7 @@ function pseudologcost_careful(y::Posit)
   __round(pseudologcost_sloppy(y))
 end
 
-doc"""
+"""
   pseudosoftplus(::Posit)
 
   calculates the pseudosoftplus function for the Posit data type.  The

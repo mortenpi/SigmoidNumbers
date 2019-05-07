@@ -1,4 +1,4 @@
-doc"""
+"""
   SigmoidNumbers.find_lsb(p)
 
   returns the exponent of the least significant bit of the posit.

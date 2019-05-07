@@ -1,6 +1,6 @@
 #currently, matrix solve operations are on hold.
 
-doc"""
+"""
   SigmoidNumbers.get_unscaled_replacement_row!(rr, M, row, cache, quire)
 
   takes the matrix M and specifies a good "replacement row" for it.  You should
@@ -69,7 +69,7 @@ function rescale_row!(M::Matrix{T}, row) where T
   value
 end
 
-doc"""
+"""
   SigmoidNumbers.row_echelon!(M, v)
 
   converts (M, v) matrix/vector into row-echelon form, with partial pivoting
@@ -121,7 +121,7 @@ function row_echelon!(M::Matrix{T}, v::Vector{T}, quire = Quire(T)) where T
   (M, v)
 end
 
-doc"""
+"""
   SigmoidNumbers.solve_row_echelon!(result, M, v, quire)
 
   solves a system of linear equations that's in row-echelon form.
@@ -156,7 +156,7 @@ function solve_with_refine(M::Matrix{T}, v::Vector{T}) where T
 end
 
 
-doc"""
+"""
   find_residual(M, r, v)
   calculates v - M * r, using exact dot products.
 """
@@ -171,7 +171,7 @@ function find_residuals(M::Matrix{T}, r::Vector{T}, v::Vector{T}, quire = Quire(
   res
 end
 
-doc"""
+"""
   refine(r, M, v)
 
   calculates M * r and finds the residuals with respect to the solution v,
@@ -199,7 +199,7 @@ function obliterate_lsb(pvalue::Posit{N,ES}) where {N,ES}
   end
 end
 
-doc"""
+"""
   SigmoidNumbers.random_exact_row(n)
   creates a row that is summable to an exact number.
 """

@@ -41,7 +41,7 @@ end
   end
 end
 
-doc"""
+"""
   fptrip(x)
 
   takes an IEEE floating point and returns the triplet (sign::Bool, exponent::Int, fraction::@UInt).

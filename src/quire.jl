@@ -3,7 +3,7 @@
 #  this code was funded by Etaphase, inc, as part of DARPA TRADES program
 #  award number BAA-16-39
 
-doc"""
+"""
   SigmoidNumbers::Quire
 
   represents the 'quire' data structure.  This is a scratchpad of unsigned
@@ -53,13 +53,13 @@ function zero!(q::Quire)
   end
 end
 
-doc"""
+"""
   inf!(q::Quire) forces the quire to carry an infinite value.
 """
 inf!(q::Quire) = (q.infinity = true; q)
 inf!(q::fquire{T}) where {T} = (q.q = T(Inf); q)
 
-doc"""
+"""
   isnegative(q::Quire) checks if the quire contains a negative value.
 """
 isnegative(q::Quire) = (last(q.fixed_point_value) & 0x8000_0000_0000_0000) != 0
@@ -240,7 +240,7 @@ function Posit{N,ES}(q::Quire) where {N,ES}
 
 end
 
-doc"""
+"""
   posit_components breaks up a posit into components (sign, exp, frac)
 
   frac is in 2's complement.  This representation corresponds to: (-1^sign) * 2^exp + (2^exp * (1.frac))
