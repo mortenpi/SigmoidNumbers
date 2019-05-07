@@ -1,5 +1,5 @@
 using SigmoidNumbers
-using Base.Test
+using Test
 
 #/((ULP{4,0}(0b0001) → ULP{4,0}(0b0001)), (Exact{4,0}(0b0000) → Exact{4,0}(0b1000))) |> println
 #exit()

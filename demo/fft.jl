@@ -15,9 +15,9 @@ if length(ARGS) < 2
   exit()
 end
 
-vector_size = parse(ARGS[1])
-posit_precision = parse(ARGS[2])
-posit_es = parse(ARGS[3])
+vector_size = Meta.parse(ARGS[1])
+posit_precision = Meta.parse(ARGS[2])
+posit_es = Meta.parse(ARGS[3])
 
 F = posit_precision <= 16 ? Float16 : Float32
 P = Posit{posit_precision, posit_es}

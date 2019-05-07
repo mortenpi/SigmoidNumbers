@@ -2,7 +2,7 @@
 
 using SigmoidNumbers
 using GenML
-using Base.Test
+using Test
 
 PType = Float32#Posit{12,0}
 
@@ -39,7 +39,7 @@ function xortrain()
   println("working on unreliable xor data set with backpropagation")
 
   input_matrix = rand(Bool, 10, 500)
-  training_results = Array{Bool,2}(1,500)
+  training_results = Array{Bool,2}(undef, 1,500)
   training_results[:] = [input_matrix[1, col] $ input_matrix[2, col] $ (rand() < 0.05) for col in 1:size(input_matrix,2)]
 
   xornet = GenML.MLP.MultilayerPerceptron{PType,(10,2,1)}(randn)

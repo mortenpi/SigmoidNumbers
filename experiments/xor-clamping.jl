@@ -67,7 +67,7 @@ end
 __print && println(clamplist)
 ################################################################################
 
-function GenML.FCL.matrixfma{F<:Posit}(output, mtx, input::AbstractVector{F}, bias, isize, osize)
+function GenML.FCL.matrixfma(output, mtx, input::AbstractVector{F}, bias, isize, osize) where F<:Posit
   for idx = 1:osize
     @inbounds output[idx] = bias[idx]
 
@@ -88,7 +88,7 @@ end
 
 ################################################################################
 
-function GenML.FCL.reversematrixfma{F<:Posit}(input_array::AbstractVector{F}, matrix::AbstractMatrix{F}, output_array::AbstractVector{F}, i, o)
+function GenML.FCL.reversematrixfma(input_array::AbstractVector{F}, matrix::AbstractMatrix{F}, output_array::AbstractVector{F}, i, o) where F<:Posit
   for idx = 1:i
       input_array[idx] = zero(F)
 
@@ -108,7 +108,7 @@ function GenML.FCL.reversematrixfma{F<:Posit}(input_array::AbstractVector{F}, ma
   end
 end
 
-function GenML.FCL.scaledouterproductfma{F<:Posit}(matrix::AbstractMatrix{F}, output_deltas::AbstractVector{F}, input_array::AbstractVector, alpha::F, i, o)
+function GenML.FCL.scaledouterproductfma(matrix::AbstractMatrix{F}, output_deltas::AbstractVector{F}, input_array::AbstractVector, alpha::F, i, o) where F<:Posit
   for idx = 1:o
     for jdx = 1:i
 
@@ -124,7 +124,7 @@ function GenML.FCL.scaledouterproductfma{F<:Posit}(matrix::AbstractMatrix{F}, ou
 end
 
 
-function GenML.FCL.scaledsubtract{F<:Posit}(target_vector::AbstractVector{F}, value_vector::AbstractVector{F}, alpha::F, o)
+function GenML.FCL.scaledsubtract(target_vector::AbstractVector{F}, value_vector::AbstractVector{F}, alpha::F, o) where F<:Posit
   for idx = 1:o
     target_vector[idx] -= alpha * value_vector[idx]
 
@@ -133,7 +133,7 @@ function GenML.FCL.scaledsubtract{F<:Posit}(target_vector::AbstractVector{F}, va
 end
 
 
-function GenML.FCL.dxasychainrule{F<:Posit}(outer_differential::AbstractVector{F}, inner_value::AbstractVector{F}, f::Function, o)
+function GenML.FCL.dxasychainrule(outer_differential::AbstractVector{F}, inner_value::AbstractVector{F}, f::Function, o) where F<:Posit
   for idx = 1:o
     outer_differential[idx] = outer_differential[idx] .* (dxasy(f))(inner_value[idx])
 
@@ -145,11 +145,11 @@ end
 
 #MONKEY PATCH MLP BACKPROPAGATION ALGO TO HAVE CLAMPS EVERYWHERE
 #implementation of the backpropagation algorithm for multilayer perceptrons.
-@generated function backpropagate!{F <: Posit, i, o, tf}(fcl::FullyConnectedTransition{F, i, o, tf},
+@generated function backpropagate!(fcl::FullyConnectedTransition{F, i, o, tf},
 #==#                                            input::AbstractArray,
 #==#                                            output::AbstractArray{F},
 #==#                                            output_deltas::AbstractArray{F},
-#==#                                            input_deltas::VoidableDeltas{F} = nothing)
+#==#                                            input_deltas::VoidableDeltas{F} = nothing) where {F <: Posit, i, o, tf}
 
   code = quote
     #for now.
@@ -182,7 +182,7 @@ end
 
 ################################################################################
 
-function evaluate!{F <: Posit, i, o, tf}(output::AbstractArray{F}, fcl::FullyConnectedTransition{F, i, o, tf}, input::AbstractArray)
+function evaluate!(output::AbstractArray{F}, fcl::FullyConnectedTransition{F, i, o, tf}, input::AbstractArray) where {F <: Posit, i, o, tf}
 
   @clamp input :evaluate_input
 
@@ -204,7 +204,7 @@ function xortrain(PType)
   println("working on unreliable xor data set with backpropagation")
 
   input_matrix = rand(Bool, 10, 500)
-  training_results = Array{Bool,2}(1,500)
+  training_results = Array{Bool,2}(undef, 1,500)
   training_results[:] = [input_matrix[1, col] $ input_matrix[2, col] $ (rand() < 0.05) for col in 1:size(input_matrix,2)]
 
   xornet = GenML.MLP.MultilayerPerceptron{PType,(10,2,1)}(randn)
@@ -229,7 +229,7 @@ function xortrain(PType)
   return wrongcount
 end
 
-Base.randn{PType <: Sigmoid}(::Type{PType}, dims::Integer...) = map(PType, randn(dims...))
+Base.randn(::Type{PType}, dims::Integer...) where {PType <: Sigmoid} = map(PType, randn(dims...))
 
 const trials = count
 

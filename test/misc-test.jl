@@ -16,7 +16,7 @@
 @test -1.5 |> Posit{8,0}  |> SigmoidNumbers.find_lsb == -1
 @test -1.5 |> Posit{32,2} |> SigmoidNumbers.find_lsb == -1
 
-function find_lsb_q{N,ES}(x::Posit{N,ES})
+function find_lsb_q(x::Posit{N,ES}) where {N,ES}
   q = Quire(Posit{N,ES})
   set!(q, x)
   SigmoidNumbers.find_lsb(q)

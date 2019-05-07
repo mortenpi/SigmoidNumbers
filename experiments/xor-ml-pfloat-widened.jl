@@ -20,7 +20,7 @@ macro clamp(x)
   esc(:(SigmoidNumbers.__round(reinterpret(F, $x))))
 end
 
-function GenML.FCL.scaledouterproductfma{F<:Posit}(matrix::AbstractMatrix{F}, output_deltas::AbstractVector{F}, input_array::AbstractVector, alpha::F, i, o)
+function GenML.FCL.scaledouterproductfma(matrix::AbstractMatrix{F}, output_deltas::AbstractVector{F}, input_array::AbstractVector, alpha::F, i, o) where F<:Posit
   #widen everything to posit16
 
   for idx = 1:o
@@ -42,7 +42,7 @@ function xortrain(PType)
   println("working on unreliable xor data set with backpropagation")
 
   input_matrix = rand(Bool, 10, 500)
-  training_results = Array{Bool,2}(1,500)
+  training_results = Array{Bool,2}(undef, 1,500)
   training_results[:] = [input_matrix[1, col] $ input_matrix[2, col] $ (rand() < 0.05) for col in 1:size(input_matrix,2)]
 
   xornet = GenML.MLP.MultilayerPerceptron{PType,(10,2,1)}(randn)
@@ -67,7 +67,7 @@ function xortrain(PType)
   return wrongcount
 end
 
-Base.randn{PType <: Sigmoid}(::Type{PType}, dims::Integer...) = map(PType, randn(dims...))
+Base.randn(::Type{PType}, dims::Integer...) where {PType <: Sigmoid} = map(PType, randn(dims...))
 
 
 const trials = 1000
