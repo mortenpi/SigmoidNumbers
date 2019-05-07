@@ -1,4 +1,6 @@
 
+using LinearAlgebra
+
 #these tests use 64-bit floating point values as the "ground truth".
 #sometimes, the input values may need to be trimmed from the exact 64-bit value.
 FloatFamily = Union{Posit, Float32, Float16, Float64}
