@@ -8,17 +8,17 @@ trim_float(arr::Array{Float64}, T::Type{<:FloatFamily}) = Float64.(T.(arr))
 trim_float(arr::Array{Complex{Float64}}, T::Type{<:FloatFamily}) = Complex{Float64}.(Complex{T}.(arr))
 
 @testset "blas-level-1-asum-real" begin
-  arr64 = rand(10) - 0.5
-  arr16_0 = Posit{16,0}.(arr64)
-  arr32_1 = Posit{32,1}.(arr64)
+  arr64 = rand(10) .- 0.5
+  arr16_0 = convert.(Posit{16,0}, arr64)
+  arr32_1 = convert.(Posit{32,1}, arr64)
 
   #test exact asum with no striding against the julia native asum function.
-  @test Posit{16,0}(BLAS.asum(4, trim_float(arr64, Posit{16,0}), 1)) == BLAS.asum(4, arr16_0, 1)
-  @test Posit{32,1}(BLAS.asum(4, trim_float(arr64, Posit{32,1}), 1)) == BLAS.asum(4, arr32_1, 1)
+  @test convert.(Posit{16,0}, BLAS.asum(4, trim_float(arr64, Posit{16,0}), 1)) == BLAS.asum(4, arr16_0, 1)
+  @test convert.(Posit{32,1}, BLAS.asum(4, trim_float(arr64, Posit{32,1}), 1)) == BLAS.asum(4, arr32_1, 1)
 
   #test exact asum with striding
-  @test Posit{16,0}(BLAS.asum(4, trim_float(arr64, Posit{16,0}), 2)) == BLAS.asum(4, arr16_0, 2)
-  @test Posit{32,1}(BLAS.asum(4, trim_float(arr64, Posit{32,1}), 2)) == BLAS.asum(4, arr32_1, 2)
+  @test convert.(Posit{16,0}, BLAS.asum(4, trim_float(arr64, Posit{16,0}), 2)) == BLAS.asum(4, arr16_0, 2)
+  @test convert.(Posit{32,1}, BLAS.asum(4, trim_float(arr64, Posit{32,1}), 2)) == BLAS.asum(4, arr32_1, 2)
 end
 
 @testset "blas-level-1-asum-cplx" begin
@@ -50,12 +50,12 @@ end
 
 @testset "blas-level-1-dot" begin
   arra_64 = rand(10) - 0.5
-  arra_16_0 = Posit{16,0}.(arra_64)
-  arra_32_1 = Posit{32,1}.(arra_64)
+  arra_16_0 = convert.(Posit{16,0}, arra_64)
+  arra_32_1 = convert.(Posit{32,1}, arra_64)
 
   arrb_64 = rand(10) - 0.5
-  arrb_16_0 = Posit{16,0}.(arrb_64)
-  arrb_32_1 = Posit{32,1}.(arrb_64)
+  arrb_16_0 = convert.(Posit{16,0}, arrb_64)
+  arrb_32_1 = convert.(Posit{32,1}, arrb_64)
 
   #test exact dot product as the basic dot product.
   @test Posit{16,0}(trim_float(arra_64, Posit{16,0}) ⋅ trim_float(arrb_64, Posit{16,0})) == arra_16_0 ⋅ arrb_16_0
