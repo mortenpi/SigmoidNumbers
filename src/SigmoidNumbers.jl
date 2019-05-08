@@ -39,4 +39,8 @@ module SigmoidNumbers
   include("BLAS/Level2-mv.jl")
   include("BLAS/Level2-sv.jl")
 
+  # TODO: this is leftover from deprecation fixes. Should use bitstring internally too
+  Base.bitstring(x::Sigmoid) = bits(x)
+  Base.bitstring(x::Valid) = bits(x)
+
 end # module

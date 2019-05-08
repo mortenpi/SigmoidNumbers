@@ -1,4 +1,4 @@
-import Base: one, zero, realmax, eps, issubnormal, isnan, isfinite
+import Base: one, zero, floatmax, eps, issubnormal, isnan, isfinite
 
 one(T::Type{Sigmoid{N, ES, mode}}) where {N, ES, mode} = reinterpret(T, @invertbit)
 zero(T::Type{Sigmoid{N, ES, mode}}) where {N, ES, mode} = reinterpret(T, zero(@UInt))
@@ -7,7 +7,7 @@ zero(T::Type{Sigmoid{N, ES, mode}}) where {N, ES, mode} = reinterpret(T, zero(@U
   v = (@signbit) - increment(Sigmoid{N, ES, mode})
   :(reinterpret(T, $v))
 end
-realmax(T::Type{Sigmoid{N, ES, mode}}) where {N,ES,mode} = maxpos(T)
+floatmax(T::Type{Sigmoid{N, ES, mode}}) where {N,ES,mode} = maxpos(T)
 
 @generated function minpos(T::Type{Sigmoid{N, ES, mode}}) where {N, ES, mode}
   v = zero(@UInt) + increment(Sigmoid{N, ES, mode})

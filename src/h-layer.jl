@@ -1,5 +1,5 @@
 
-import Base: bits, show
+import Base: show
 
 bits(x::Sigmoid{N, ES, mode}) where {N, ES, mode} = bits(reinterpret(@UInt, x))[1:N]
 function bits(x::Sigmoid{N, ES, mode}, separator::AbstractString) where {N, ES, mode}
