@@ -22,7 +22,7 @@ trim_float(arr::Array{Complex{Float64}}, T::Type{<:FloatFamily}) = Complex{Float
 end
 
 @testset "blas-level-1-asum-cplx" begin
-  arr_c64 = (rand(10) - 0.5) + (rand(10) - 0.5) * im
+  arr_c64 = (rand(10) .- 0.5) .+ (rand(10) .- 0.5) .* im
   arr_c32_1 = Complex{Posit{32,1}}.(arr_c64)
 
   #currently, asum_cmplx does not meet exactitude requirements.  Instead, we'll show that it's better
@@ -49,11 +49,11 @@ end
 end
 
 @testset "blas-level-1-dot" begin
-  arra_64 = rand(10) - 0.5
+  arra_64 = rand(10) .- 0.5
   arra_16_0 = convert.(Posit{16,0}, arra_64)
   arra_32_1 = convert.(Posit{32,1}, arra_64)
 
-  arrb_64 = rand(10) - 0.5
+  arrb_64 = rand(10) .- 0.5
   arrb_16_0 = convert.(Posit{16,0}, arrb_64)
   arrb_32_1 = convert.(Posit{32,1}, arrb_64)
 
