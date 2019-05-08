@@ -31,7 +31,7 @@ const addition_types = Dict((:guess, :guess) => :guess,
 
   quote
     #correctly set the mode.
-    const mode = $quotemode
+    mode = $quotemode
 
     #adding infinities is infinite.
     if !isfinite(lhs)
