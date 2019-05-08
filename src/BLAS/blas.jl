@@ -5,7 +5,7 @@ const __imag_quire = Quire(Posit{32,2})
 
 #this is a temporary shim to achieve some BLAS calculations
 
-Base.sqrt(x::Posit{N,ES}) where {N,ES} = Posit{N,ES}(Float64(x))
+Base.sqrt(x::Posit{N,ES}) where {N,ES} = convert(Posit{N,ES}, convert(Float64, x)) # TODO: ????
 
 #this function is going to be called a lot.
 

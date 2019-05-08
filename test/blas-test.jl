@@ -4,7 +4,7 @@ using LinearAlgebra
 #these tests use 64-bit floating point values as the "ground truth".
 #sometimes, the input values may need to be trimmed from the exact 64-bit value.
 FloatFamily = Union{Posit, Float32, Float16, Float64}
-trim_float(arr::Array{Float64}, T::Type{<:FloatFamily}) = Float64.(T.(arr))
+trim_float(arr::Array{Float64}, T::Type{<:FloatFamily}) = convert.(Float64, convert.(T, arr))
 trim_float(arr::Array{Complex{Float64}}, T::Type{<:FloatFamily}) = Complex{Float64}.(Complex{T}.(arr))
 
 @testset "blas-level-1-asum-real" begin
@@ -31,11 +31,11 @@ end
 
   delta_p32 = abs(
     BLAS.asum(4, trim_float(arr_c64, Posit{32,1}), 1) -
-    Float64(BLAS.asum(4, arr_c32_1, 1)))
+    convert(Float64, BLAS.asum(4, arr_c32_1, 1)))
 
   delta_f32 = abs(
     BLAS.asum(4, trim_float(arr_c64, Float32), 1) -
-    Float64(BLAS.asum(4, arr_c32_1, 1)))
+    convert(Float64, BLAS.asum(4, arr_c32_1, 1)))
 
   @test_skip delta_p32 < delta_f32
 
